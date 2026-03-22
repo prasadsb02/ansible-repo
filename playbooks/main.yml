@@ -1,0 +1,23 @@
+---
+- name: Simple Test Playbook
+  hosts: localhost
+  connection: local
+  gather_facts: yes
+
+  tasks:
+
+    - name: Print hostname
+      debug:
+        msg: "This device hostname is {{ ansible_hostname }}"
+
+    - name: Create a test file
+      copy:
+        dest: /tmp/ansible_test.txt
+        content: "Ansible pull is working!"
+
+    - name: Ensure a package is installed (Linux only)
+      apt:
+        name: curl
+        state: present
+      become: yes
+      when: ansible_os_family == "Debian"
